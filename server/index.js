@@ -1,44 +1,57 @@
-const express = require('express')
-const compression = require('compression')
-const { renderPage } = require('vite-plugin-ssr')
-
+import compress from '@fastify/compress'
+import middie from '@fastify/middie'
+import fastifyStatic from '@fastify/static'
+import fastify from 'fastify'
+import path from 'node:path'
+import process from 'node:process';
+import { fileURLToPath } from 'node:url'
+import { createServer as createViteServer } from 'vite'
+import { renderPage } from 'vite-plugin-ssr'
 const isProduction = process.env.NODE_ENV === 'production'
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = `${__dirname}/..`
 
 startServer()
 
 async function startServer() {
-  const app = express()
+  const app = fastify()
 
-  app.use(compression())
+  await app.register(middie)
+  await app.register(compress)
 
   if (isProduction) {
-    const sirv = require('sirv')
-    app.use(sirv(`${root}/dist/client`))
+    const distPath = path.join(root, '/dist/client/assets')
+    app.register(fastifyStatic, {
+      root: distPath,
+      prefix: '/assets/'
+    })
   } else {
-    const vite = require('vite')
-    const viteDevMiddleware = (
-      await vite.createServer({
-        root,
-        server: { middlewareMode: true }
-      })
-    ).middlewares
-    app.use(viteDevMiddleware)
+    const viteServer = await createViteServer({
+      root,
+      server: { middlewareMode: true }
+    })
+    await app.use(viteServer.middlewares)
   }
 
-  app.get('*', async (req, res, next) => {
+  app.get('*', async (req, reply) => {
     const pageContextInit = {
-      urlOriginal: req.originalUrl
+      urlOriginal: req.url
     }
     const pageContext = await renderPage(pageContextInit)
     const { httpResponse } = pageContext
-    if (!httpResponse) return next()
-    const { body, statusCode, contentType, earlyHints } = httpResponse
-    if (res.writeEarlyHints) res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
-    res.status(statusCode).type(contentType).send(body)
+
+    if (!httpResponse) {
+      return reply.code(404).type('text/html').send('Not Found')
+    }
+
+    const { body, statusCode, contentType } = httpResponse
+
+    return reply.status(statusCode).type(contentType).send(body)
   })
 
-  const port = process.env.PORT || 3000
-  app.listen(port)
+  const port = process.env.PORT ? +process.env.PORT : 3000
+
+  app.listen({ port })
+
   console.log(`Server running at http://localhost:${port}`)
 }

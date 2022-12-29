@@ -1,0 +1,159 @@
+.main-search {
+  min-height: 610px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: $white;
+
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('@/assets/img/hero.jpg');
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 3;
+  }
+
+  &__rate {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.1);
+    border-radius: $radius5;
+    padding: 16px;
+
+    .h4 {
+      span {
+        display: block;
+      }
+    }
+  }
+
+  &__fields {
+    border-radius: $radius5;
+    background: $bg-dark;
+    padding: 20px;
+
+    .button_large {
+      min-height: 60px;
+    }
+  }
+
+  .error {
+    outline: solid thick red;
+  }
+
+  .multiselect__tags {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .multiselect__input-wrapper {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .multiselect__tags-wrap {
+    display: inline-flex;
+    max-width: 100%;
+    overflow: hidden;
+    justify-content: flex-end;
+    transition: 0.3s;
+  }
+
+  .multiselect__tag {
+    overflow: visible;
+  }
+
+  .multiselect__option {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    min-height: 24px;
+    line-height: 24px;
+  }
+
+  .option__bage {
+    background-color: $border;
+    color: $black;
+    font-size: 9px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    padding: 0 6px;
+    line-height: 1.5;
+  }
+
+  .option__image {
+    width: 21px;
+    min-width: 21px;
+    display: block;
+    margin-right: 8px;
+
+    img {
+      display: block;
+    }
+  }
+
+  .option__title {
+    display: block;
+    margin-right: 8px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 1200px) {
+    min-height: 650px;
+
+    &__slogan {
+      max-width: 530px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    min-height: 0;
+
+    &__rate {
+      padding: 12px 10px;
+
+      .h4 {
+        display: inline;
+      }
+    }
+
+    &__fields {
+      padding: 10px;
+    }
+
+    &__bg {
+      height: 75%;
+      bottom: auto;
+    }
+  }
+
+  @media (max-width: 576px) {
+    &__rate {
+      display: flex;
+      align-items: center;
+
+      img {
+        display: block;
+      }
+
+      h4 {
+        padding-left: 8px;
+      }
+    }
+
+    .h1 {
+      font-size: 24px;
+    }
+  }
+}

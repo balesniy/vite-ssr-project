@@ -1,0 +1,77 @@
+.language {
+	position: relative;
+
+	&__data {
+		display: flex;
+		align-items: center;
+		
+		cursor: pointer;
+		transition: 0.3s ease-in-out;
+
+		&_main {
+			justify-content: center;
+			
+			.language__name {
+				border-bottom: 1px dashed;
+			}
+
+			.language__flag {
+				width: 28px;
+			}
+
+			&:hover {
+				color: $main;
+				.language__name {
+					border-bottom: 1px solid;
+				}
+			}
+		}
+	}
+
+	&__flag {
+		display: block;
+		width: 20px;
+		min-width: 20px;
+
+		img {
+			display: block;
+		}
+	}
+
+	&__name {
+		display: block;
+		transition: border 0.3s ease-in-out;
+	}
+
+	&__list {
+		color: $text;
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		margin-top: 8px;
+		list-style: none;
+	}
+
+	&__item {
+		padding: 12px;
+		transition: all .3s ease-in-out;
+
+		&:hover {
+			background-color: $main;	
+		}
+	}
+
+	@media (min-width: 993px) {
+		&__list {
+			position: absolute;
+			background: $white;
+			padding: 4px;
+			border-radius: 3px;
+			box-shadow: $shadow;
+			border: $border;
+			top: 100%;
+			right: 0;
+			transition: all .3s ease-in-out;
+			width: 21rem;
+		}
+	}
+}

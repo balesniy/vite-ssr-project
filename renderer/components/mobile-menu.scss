@@ -1,0 +1,48 @@
+.mobile-menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1025;
+	transition: all 0.3s ease-in-out;
+	display: none;
+
+	&--open {
+		display: block;
+	}
+
+	&__layout {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		z-index: 1;
+		background: $text;
+		opacity: 0.6;
+	}
+
+	&__block {
+		padding: 16px;
+		transition: all 0.3s ease-in-out;
+		background: $white;
+		width: 320px;
+		z-index: 5;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__content {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+	}
+}
+

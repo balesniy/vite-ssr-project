@@ -1,0 +1,159 @@
+//Text styles
+h1,
+.h1 {
+	font-size: 38px;
+	line-height: 1.16;
+	font-weight: 500;
+}
+
+h2,
+.h2 {
+	font-size: 32px;
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+h3,
+.h3 {
+	font-size: 28px;
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+h4,
+.h4 {
+	font-size: 22px;
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+h5,
+.h5 {
+	font-size: 18px;
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+h6,
+.h6 {
+	font-size: 16px;
+	line-height: 1.3;
+	font-weight: 500;
+}
+
+.fs-9 {
+	font-size: 9px;
+}
+
+.fs-10 {
+	font-size: 10px;
+}
+
+.fs-12 {
+	font-size: 12px;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.fs-18 {
+	font-size: 18px;
+}
+
+.fs-20 {
+	font-size: 20px;
+}
+
+.fs-24 {
+	font-size: 24px;
+}
+
+.fs-28 {
+	font-size: 28px;
+}
+
+.fs-32 {
+	font-size: 32px;
+}
+
+.fs-48 {
+	font-size: 48px;
+}
+
+.fw-regular {
+	font-weight: 400;
+}
+
+.fw-medium {
+	font-weight: 500;
+}
+
+.fw-semibold {
+	font-weight: 600;
+}
+
+.fw-bold {
+	font-weight: 700;
+}
+
+.label-text {
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.text-uppercase {
+	text-transform: uppercase;
+}
+
+@media (max-width: 1200px) {
+	.fs-d-20 {
+		font-size: 20px;
+	}
+	.fs-d-22 {
+		font-size: 22px;
+	}
+}
+
+@media (max-width: 768px) {
+
+	h1,
+	.h1 {
+		font-size: 28px;
+	}
+
+	h2,
+	.h2 {
+		font-size: 24px;
+	}
+
+	h3,
+	.h3 {
+		font-size: 20px;
+	}
+
+	h4,
+	.h4 {
+		font-size: 18px;
+	}
+
+	h6,
+	.h6 {
+		font-size: 16px;
+	}
+
+	.fs-24 {
+		font-size: 16px;
+	}
+
+	.fs-m-18 {
+		font-size: 18px;
+	}
+	.fs-m-16 {
+		font-size: 16px;
+	}
+}

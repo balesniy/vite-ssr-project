@@ -1,0 +1,63 @@
+.currency {
+	position: relative;
+	
+	&__data {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		cursor: pointer;
+		transition: 0.3s ease-in-out;
+
+		&_main {
+			.currency__name {
+				border-bottom: 1px dashed;
+			}
+
+			&:hover {
+				color: $main;
+				.currency__name {
+					border-bottom: 1px solid;
+				}
+			}
+		}
+	}
+
+	&__symbol {
+		display: block;
+	}
+
+	&__name {
+		display: block;
+	}
+
+	&__list {
+		color: $text;
+		list-style: none;
+		margin-top: 8px;
+	}
+
+	&__item {
+		transition: all .3s ease-in-out;
+		padding: 12px;
+
+		&.is-selected,
+		&:hover {
+			background-color: $main;	
+		}
+	}
+
+	@media (min-width: 993px) {
+		&__list {
+			position: absolute;
+			background: $white;
+			padding: 4px;
+			border-radius: 3px;
+			box-shadow: $shadow;
+			border: $border;
+			top: 100%;
+			right: 0;
+			transition: all .3s ease-in-out;
+			width: 25rem;
+		}
+	}
+}

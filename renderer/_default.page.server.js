@@ -5,11 +5,12 @@ import logoUrl from './logo.svg'
 
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'urlPathname']
+export const passToClient = ['initialStoreState', 'pageProps', 'urlPathname']
 
 async function render(pageContext) {
-  const app = createApp(pageContext)
+  const { app, store } = createApp(pageContext)
   const appHtml = await renderToString(app)
+  const initialStoreState = store.state.value
 
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext.exports
@@ -33,6 +34,7 @@ async function render(pageContext) {
   return {
     documentHtml,
     pageContext: {
+      initialStoreState,
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
     }
   }

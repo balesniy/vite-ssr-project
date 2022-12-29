@@ -1,0 +1,93 @@
+//Color styles
+.text {
+	color: $text;
+}
+
+.text-secondary {
+	color: $text-secondary;
+}
+
+.text-dark {
+	color: $bg-dark;
+}
+
+.text-white {
+	color: $white;
+}
+
+.text-white-opacity8 {
+	color: $white-opacity8;
+}
+
+.text-grey {
+	color: $helpers;
+}
+
+.text-blue {
+	color: $blue;
+}
+
+.text-blue-dark {
+	color: $blue-dark;
+}
+
+.text-blue-light {
+	color: $blue-light;
+}
+
+.text-green {
+	color: $green;
+}
+
+.text-success {
+	color: $success;
+}
+
+.text-error {
+	color: $error;
+}
+
+.text-main {
+	color: $main;
+}
+
+// background
+.bg-main {
+	background-color: $main;
+}
+
+.bg-dark {
+	background-color: $bg-dark;
+}
+
+.bg-grey-gradient {
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #3E4757;
+}
+
+.bg-grey {
+	background-color: $grey-light;
+}
+
+.bg-white {
+	background-color: $white;
+}
+
+.border-main {
+	border: 1px solid $main;
+}
+
+.border-grey {
+	border: 1px solid $border;
+}
+
+.border-dark {
+	border: 1px solid $dark-border;
+}
+
+.border-blue {
+	border: 1px solid $blue;
+}
+
+.border-success {
+	border: 1px solid $success;
+}

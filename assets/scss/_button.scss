@@ -1,0 +1,165 @@
+.button {
+	display: inline-flex;
+	cursor: pointer;
+	transition: 0.3s ease-in-out;
+	align-items: center;
+	justify-content: center;
+	font-family: $jost;
+	text-align: center;
+	border-radius: $radius;
+	border: none;
+	font-size: 14px;
+
+	&_large {
+		min-height: 52px;
+		padding: 0 40px;
+	}
+
+	&_medium {
+		min-height: 48px;
+		padding: 0 24px;
+	}
+
+	&_small {
+		min-height: 36px;
+		padding: 0 24px;
+	}
+
+	&_icon {
+		height: 36px;
+		width: 36px;
+	}
+
+	&_primary {
+		font-weight: 500;
+		font-size: 14px;
+		background: $main;
+		color: $text;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			background: $main-hover;
+		}
+	}
+
+	&_simple {
+		background: transparent;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			color: $main-hover;
+		}
+	}
+
+	&_border {
+		border: 2px solid rgba(0, 0, 0, 0.5);
+		background: transparent;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			color: $main-hover;
+			border-color: $main-hover;
+		}
+	}
+
+	&_error {
+		border: 2px solid $pink;
+		background: transparent;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			color: $error;
+			border-color: $error;
+		}
+	}
+
+	&_border-more {
+		border: 2px solid $main;
+		background: transparent;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			color: $main-hover;
+			border-color: $main-hover;
+		}
+	}
+
+	&_secondary {
+		background: $bg-dark;
+		border: 2px solid $bg-dark;
+		color: $white;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			background: $white;
+			color: $bg-dark;
+		}
+	}
+
+	&:disabled {
+		cursor: default;
+		background-color: #aaa;
+	}
+
+	&_full {
+		width: 100%;
+	}
+
+	&__text {
+		flex-grow: 1;
+		display: block;
+		text-align: left;
+
+		&:not(:last-child) {
+			padding-right: 12px;
+		}
+
+		&:not(:first-child) {
+			padding-left: 12px;
+		}
+	}
+
+	&__centered {
+		display: flex;
+		width: max-content;
+		margin-inline: auto;
+
+		@media (max-width: 576px) {
+			width: calc(100% - 20px);
+			margin-inline: 10px;
+		}
+	}
+
+	@media (max-width: 768px) {
+		&_large {
+			padding: 0 16px;
+		}
+
+		&_medium {
+			padding: 0 16px;
+		}
+
+		&_small {
+			padding: 0 12px;
+		}
+		&_m-full {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 576px) {
+		&__text {
+			&.s-hidden {
+				display: none;
+			}
+		}
+	}
+}

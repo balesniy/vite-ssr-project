@@ -1,0 +1,62 @@
+.section {
+	padding: 40px 0;
+
+	&_top {
+		padding-top: 120px;
+	}
+
+	&_top-double {
+		padding-top: 80px;
+	}
+
+	&_bottom-double {
+		padding-bottom: 80px;
+	}
+
+	&_grey-line {
+		position: relative;
+
+		&::after {
+			position: absolute;
+			content: '';
+			background: $bg-grey;
+			top: 74px;
+			bottom: 74px;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+
+		.container {
+			position: relative;
+			z-index: 3;
+		}
+	}
+
+	&_slider {
+		overflow: hidden;
+	}
+
+	@media (max-width: 768px) {
+		padding: 30px 0;
+		
+		&_top {
+			padding-top: 72px;
+		}
+
+		&_top-double {
+			padding-top: 0;
+		}
+
+		&_bottom-double {
+			padding-bottom: 0;
+		}
+
+		&_grey-line {
+			&::after {
+				top: 0;
+				bottom: 0;
+			}
+		}
+	}
+}

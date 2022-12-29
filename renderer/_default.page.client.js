@@ -3,8 +3,9 @@ import { createApp } from './app'
 export { render }
 
 async function render(pageContext) {
-  const app = createApp(pageContext)
-  app.mount('#app')
+  const instance = createApp(pageContext)
+  instance.store.state.value = pageContext.initialStoreState
+  instance.app.mount('#app')
 }
 
 /* To enable Client-side Routing:

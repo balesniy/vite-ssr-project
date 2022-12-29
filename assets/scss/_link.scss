@@ -1,0 +1,48 @@
+.link {
+	display: inline-block;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	transition: 0.3s ease-in-out;
+
+	img {
+		display: block;
+	}
+
+	&_dashed {
+		padding-bottom: 2px;
+		border-bottom: 1px dashed;
+
+		&.text-blue {
+			border-color: $blue;
+		}
+
+		&.text-white-opacity8 {
+			border-color: $white-opacity8;
+		}
+
+		&:hover {
+			border-bottom: 1px solid;
+		}
+	}
+
+	&_underline-hover {
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&-text {
+		&:hover {
+			color: $main-hover;
+		}
+	}
+
+	&_underline-dashed {
+		text-decoration: underline dashed;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
