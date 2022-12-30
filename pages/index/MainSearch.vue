@@ -32,11 +32,11 @@
         <div class="g-row g-row_small mb-20 mb-m-0 g-row_t-wrap">
           <div class="g-col g-col_33 g-col_t-100 pb-12">
             <multiselect
-                :value="formData.countries"
+                :value="searchData.countries"
                 :multiple="true"
                 :close-on-select="false"
                 :hide-selected="true"
-                :options="countries"
+                :options="searchData.countriesOptions"
                 :options-limit="200"
                 label="name"
                 track-by="id"
@@ -49,54 +49,52 @@
                 @input="setSelectedCountry"
                 @select="isError = false"
             >
-              <template slot="tag" slot-scope="props">
+              <template slot="tag" slot-scope="{ option, remove }">
                 <span
                     class="multiselect__tag"
                     :class="{
-                    'multiselect__tag--area': props.option.type === 'region',
-                  }"
+                      'multiselect__tag--area': option?.type === 'region',
+                    }"
                 >
                   <span
-                      v-if="props.option.countryAlpha2Code"
+                      v-if="option?.countryAlpha2Code"
                       class="multiselect__tag-image"
                   >
                     <img
                         :src="
-                        `/img/flags/` + props.option.countryAlpha2Code + `.png`
+                        `/img/flags/` + option.countryAlpha2Code + `.png`
                       "
                         alt="flag"
                     />
                   </span>
                   <span
-                      v-text="props.option.name"
+                      v-text="option?.name"
                       class="multiselect__tag-text"
-                  ></span>
+                  />
                   <span
                       tabindex="1"
                       class="multiselect__tag-close"
-                      @keypress.enter.prevent="props.remove(props.option)"
-                      @mousedown.prevent="props.remove(props.option)"
+                      @keypress.enter.prevent="remove(option)"
+                      @mousedown.prevent="remove(option)"
                   >
                     <SvgIcon iconName="close" className="svg-icon_16" />
                   </span>
                 </span>
               </template>
-              <template slot="option" slot-scope="props">
+              <template slot="option" slot-scope="{ option }">
                 <span
-                    v-if="props.option.countryAlpha2Code"
+                    v-if="option?.countryAlpha2Code"
                     class="option__image"
                 >
                   <img
                       :src="
-                      `/img/flags/` + props.option.countryAlpha2Code + `.png`
+                      `/img/flags/` + option.countryAlpha2Code + `.png`
                     "
                       alt="flag"
                   />
                 </span>
-                <span class="option__title">{{ props.option.name }}</span>
-                <span class="option__bage label-text">{{
-                    props.option.type
-                  }}</span>
+                <span class="option__title">{{ option?.name }}</span>
+                <span class="option__bage label-text">{{ option?.type }}</span>
               </template>
             </multiselect>
           </div>
@@ -114,12 +112,12 @@
                 :placeholder="$t('lk__нормальное_состояние__53.translation')"
                 format="D MMM YYYY"
                 :lang="$i18n.locale"
-                :open.sync="isCalendarOpen"
+                :open.sync="state.isCalendarOpen"
             >
               <template #header>
                 <button
                     class="mx-datepicker-popup-close button button_simple"
-                    @click="isCalendarOpen = false"
+                    @click="state.isCalendarOpen = false"
                 >
                   <SvgIcon iconName="close" />
                 </button>
@@ -129,18 +127,18 @@
 
           <div class="g-col g-col_22 g-col_t-33 g-col_m-100 pb-12">
             <DropdownSelect
-                :options="getTypes"
-                :value="formData.types.label"
+                :options="filters.boatTypes"
+                :value="searchData.type"
                 :with-icon="true"
                 :placeholder="
-                $t('личный_кабинет__плейсхордер_ушел_сюда__71.translation')
-              "
+                  $t('личный_кабинет__плейсхордер_ушел_сюда__71.translation')
+                "
                 icon="yacht"
                 append-to-body
                 @input="
-                (value, loading, toggle) =>
-                  changeType(value, loading, toggle, 'types')
-              "
+                  (value, loading, toggle) =>
+                    changeType(value, loading, toggle, 'types')
+                "
             />
           </div>
 
@@ -163,8 +161,8 @@
               </div>
 
               <Slider
-                  :min-data="getMinPrice"
-                  :max-data="getMaxPrice"
+                  :min-data="minPrice"
+                  :max-data="maxPrice"
                   :formatter="(price) => `${price.toLocaleString()} €`"
                   @change="handlePriceChange"
               />
@@ -176,8 +174,8 @@
               </div>
 
               <Slider
-                  :min-data="getMinCabins"
-                  :max-data="getMaxCabins"
+                  :min-data="minCabins"
+                  :max-data="maxCabins"
                   @change="handleCabinsChange"
               />
             </div>
@@ -188,8 +186,8 @@
               </div>
 
               <Slider
-                  :min-data="getMinYear"
-                  :max-data="getMaxYear"
+                  :min-data="minYear"
+                  :max-data="maxYear"
                   :formatter="yearsFormatter"
                   @change="handleYearsChange"
               />
@@ -202,12 +200,6 @@
 </template>
 
 <script setup>
-import { useSearch } from '@/stores/search.js'
-
-const searchData = useSearch()
-</script>
-
-<script>
 // import DropdownSelect from "@/components/Dropdowns/Select/Select.vue";
 // import Slider from "@/components/Slider/Slider";
 // import Calendar from "@/components/Calendars/DateTimePicker";
@@ -215,140 +207,112 @@ const searchData = useSearch()
 // import SvgIcon from "@/components/SvgIcon/SvgIcon";
 //
 // import debounce from "lodash/debounce";
-//
-// import { createNamespacedHelpers } from "vuex";
 // import { IS_DEV } from "@/utils/config";
-//
 // const { mapState, mapMutations } = createNamespacedHelpers("searchForm");
 
+import { usePageContext } from '@/renderer/usePageContext.js'
+const pageContext = usePageContext()
+// console.log({ pageContext })
+
+import { useSearch } from '@/stores/search.js'
+import {computed, onMounted, onServerPrefetch, reactive} from "vue";
+const props = defineProps({
+  filters: {
+    type: Object,
+    default: () => ({})
+  },
+  loaded: {
+    type: Boolean,
+    default: true
+  }
+})
+
+const searchData = useSearch()
+const loadCountries = async () => {
+  await searchData.fetchCountries()
+}
+onServerPrefetch(loadCountries)
+// onMounted(loadCountries)
+const state = reactive({
+  isLoadingForm: false,
+  isError: false,
+  clearable: true,
+  isCalendarOpen: false,
+})
+const minPrice = computed(() => parseInt(props.filters.pricesRange?.min ?? 0))
+const maxPrice = computed(() => parseInt(props.filters.pricesRange?.max ?? 100000))
+const minCabins = computed(() => parseInt(props.filters.cabinsRange?.[0].min ?? 0))
+const maxCabins = computed(() => parseInt(props.filters.cabinsRange?.[0].max ?? 0))
+const minYear = computed(() => {
+  if (!props.filters.boatYearsRange) {
+    return 0;
+  }
+  const min = parseInt(props.filters.boatYearsRange[0].min);
+  return min < 2000 ? 1999 : min;
+})
+const maxYear = computed(() => parseInt(props.filters.boatYearsRange?.[0].max ?? 0))
+// ...mapState(["formData", "countries"]),
+const date = computed(() => ({
+  get() {
+    return searchData.date;
+  },
+  set(value) {
+    searchData.date = value
+  },
+}))
+const errorText = computed(() => state.isError ? "pick at least one country" : "")
+const handleCabinsChange = (value) => {
+  searchData.cabins = value
+}
+const handleYearsChange = ([minValue, maxValue]) => {
+  searchData.years = [minValue === 1999 ? 0 : minValue, maxValue]
+}
+const handlePriceChange = (value) => {
+  searchData.price = value
+}
+const submitSearch = () => {
+  if (!searchData.countries.length) {
+    state.isError = true;
+    return;
+  }
+
+  // if (!IS_DEV) {
+  //   this.$gtm.trackEvent({ event: "search" });
+  // }
+
+  // this.$router.push({
+  //   path: "search",
+  //   query: this.$store.getters["searchForm/query"],
+  // });
+}
+const disabledBeforeTodayAndAfterAWeek = (date) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return date < today;
+}
+const yearsFormatter = (v) => {
+  if (v < 2000) {
+    return "< 2000";
+  }
+  return v;
+}
+const selectNextWeek = (emit) => {
+  const start = new Date();
+  const end = new Date();
+  end.setTime(end.getTime() + 7 * 24 * 3600 * 1000);
+  const date = [start, end];
+  emit(date);
+}
+</script>
+
+<script>
 export default {
-  props: {
-    filters: {
-      type: Object,
-    },
-    loaded: Boolean,
-  },
-  data() {
-    return {
-      isLoadingForm: false,
-      isError: false,
-      clearable: true,
-      isCalendarOpen: false,
-    };
-  },
-  computed: {
-    getTypes() {
-      return [
-        { label: this.$t("личный_кабинет__готово__69.translation"), value: "" },
-        { label: this.$t("type_sailboat.translation"), value: 2 },
-        { label: this.$t("type_motorboat.translation"), value: 4 },
-        { label: this.$t("type_catamaran.translation"), value: 3 },
-        { label: this.$t("type_riverboat.translation"), value: 5 },
-        { label: this.$t("type_trimaran.translation"), value: 6 },
-        { label: this.$t("type_gulet.translation"), value: 1 },
-      ];
-    },
-    getMinPrice() {
-      if (this.filters.pricesRange) {
-        return parseInt(this.filters.pricesRange.min);
-      }
-      return 0;
-    },
-    getMaxPrice() {
-      if (this.filters.pricesRange) {
-        return parseInt(this.filters.pricesRange.max);
-      }
-      return 100000;
-    },
-    getMinCabins() {
-      if (this.filters.cabinsRange) {
-        return parseInt(this.filters.cabinsRange[0].min);
-      }
-      return 0;
-    },
-    getMaxCabins() {
-      if (this.filters.cabinsRange) {
-        return parseInt(this.filters.cabinsRange[0].max);
-      }
-      return 0;
-    },
-    getMinYear() {
-      if (!this.filters.boatYearsRange) {
-        return 0;
-      }
-      const min = parseInt(this.filters.boatYearsRange[0].min);
-      return min < 2000 ? 1999 : min;
-    },
-    getMaxYear() {
-      if (this.filters.boatYearsRange) {
-        return parseInt(this.filters.boatYearsRange[0].max);
-      }
-      return 0;
-    },
-    // ...mapState(["formData", "countries"]),
-    date: {
-      get() {
-        return this.$store.state.searchForm.formData.date;
-      },
-      set(value) {
-        // console.log(value);
-        this.$store.commit("searchForm/setDates", value);
-      },
-    },
-    error() {
-      return this.isError ? "pick at least one country" : "";
-    },
-  },
   methods: {
     // ...mapMutations([
-    //   "setPrice",
-    //   "setCabins",
-    //   "setYears",
     //   "setSelectedCountry",
     // ]),
-    handleCabinsChange(value) {
-      this.setCabins(value);
-    },
-    handleYearsChange([minValue, maxValue]) {
-      this.setYears([minValue === 1999 ? 0 : minValue, maxValue]);
-    },
-    handlePriceChange(value) {
-      this.setPrice(value);
-    },
-    submitSearch() {
-      if (!this.formData.countries.length) {
-        this.isError = true;
-        return;
-      }
 
-      if (!IS_DEV) {
-        this.$gtm.trackEvent({ event: "search" });
-      }
-
-      this.$router.push({
-        path: "search",
-        query: this.$store.getters["searchForm/query"],
-      });
-    },
-    disabledBeforeTodayAndAfterAWeek(date) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      return date < today;
-    },
-    yearsFormatter(v) {
-      if (v < 2000) {
-        return "< 2000";
-      }
-      return v;
-    },
-    selectNextWeek(emit) {
-      const start = new Date();
-      const end = new Date();
-      end.setTime(end.getTime() + 7 * 24 * 3600 * 1000);
-      const date = [start, end];
-      emit(date);
-    },
     async fetchAllDropData() {
       if (this.showFormLoader) {
         this.isLoadingForm = true;
@@ -416,14 +380,14 @@ export default {
   mounted() {
     // console.log('main search mounted with', this.countries)
     // this.fetchAllDropData();
-    if (!this.countries.length) {
-      // список мест еще не загружался в форму
-      this.$store.dispatch("searchForm/selectCountryRegion", {
-        locale: this.$i18n.locale,
-        query: "",
-        countryCode: "",
-      });
-    }
+    // if (!this.countries?.length) {
+    //   // список мест еще не загружался в форму
+    //   this.$store.dispatch("searchForm/selectCountryRegion", {
+    //     locale: this.$i18n.locale,
+    //     query: "",
+    //     countryCode: "",
+    //   });
+    // }
   },
 };
 </script>

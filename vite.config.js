@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue'
 import ssr from 'vite-plugin-ssr/plugin'
-// import vueI18n from '@intlify/vite-plugin-vue-i18n'
+import vueI18n from '@intlify/unplugin-vue-i18n/vite'
 
 const ssrTransformCustomDir = () => {
   return {
@@ -21,12 +21,10 @@ export default {
           }
         }
       }), ssr(),
-      // vueI18n({
-      //   // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-      //   // compositionOnly: false,
-      //   // you need to set i18n resource including paths !
-      //   include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
-      // })
+      vueI18n({
+        // you need to set i18n resource including paths !
+        // include: resolve(dirname(fileURLToPath(import.meta.url)), './langs/*.json'),
+      })
   ],
   resolve: {
     alias: {

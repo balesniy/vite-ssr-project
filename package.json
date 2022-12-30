@@ -11,19 +11,21 @@
     "@fastify/compress": "^6.2.0",
     "@fastify/middie": "^8.1.0",
     "@fastify/static": "^6.6.0",
-    "@vitejs/plugin-vue": "^3.0.3",
+    "@intlify/unplugin-vue-i18n": "^0.8.1",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vue/compiler-sfc": "^3.2.33",
     "@vue/server-renderer": "^3.2.33",
     "cross-env": "^7.0.3",
     "fastify": "^4.10.2",
+    "ky": "^0.33.1",
+    "ky-universal": "^0.11.0",
     "pinia": "^2.0.28",
-    "vite": "^3.0.9",
-    "vite-plugin-ssr": "^0.4.57",
+    "vite": "^4.0.3",
+    "vite-plugin-ssr": "^0.4.68",
     "vue": "^3.2.33",
     "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^7.0.0",
     "sass": "^1.56.2"
   }
 }

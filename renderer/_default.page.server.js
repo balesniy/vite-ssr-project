@@ -1,11 +1,12 @@
 import { renderToString } from '@vue/server-renderer'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
+import ky from 'ky-universal'
 import { createApp } from './app'
 import logoUrl from './logo.svg'
 
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['initialStoreState', 'pageProps', 'urlPathname']
+export const passToClient = ['initialStoreState', 'pageProps', 'urlPathname', 'documentProps']
 
 async function render(pageContext) {
   const { app, store } = createApp(pageContext)
@@ -13,7 +14,7 @@ async function render(pageContext) {
   const initialStoreState = store.state.value
 
   // See https://vite-plugin-ssr.com/head
-  const { documentProps } = pageContext.exports
+  const { documentProps } = pageContext // pageContext.exports // ???
   const title = (documentProps && documentProps.title) || 'Vite SSR app'
   const desc = (documentProps && documentProps.description) || 'App using Vite + vite-plugin-ssr'
 
@@ -36,6 +37,17 @@ async function render(pageContext) {
     pageContext: {
       initialStoreState,
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
+    }
+  }
+}
+
+export async function onBeforeRender(pageContext) {
+  const { data: countriesOptions } = await ky.get('https://searadar.com/api/search/geo-suggest').json()
+  return {
+    pageContext: {
+      serverData: {
+        countriesOptions // ???
+      }
     }
   }
 }
