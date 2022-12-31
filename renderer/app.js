@@ -10,7 +10,7 @@ export { createApp }
 
 let rootComponent
 function createApp(pageContext) {
-  const { Page } = pageContext
+  const { Page, user } = pageContext
 
   let rootComponent
   const PageWithWrapper = defineComponent({
