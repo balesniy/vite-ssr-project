@@ -3,7 +3,7 @@ import {
 } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
-import PageShell from './PageShell.vue'
+import LayoutDefault from './PageShell.vue'
 import { setPageContext } from './usePageContext'
 
 export { createApp }
@@ -16,14 +16,15 @@ function createApp(pageContext) {
   const PageWithWrapper = defineComponent({
     data: () => ({
       Page: markRaw(Page),
-      pageProps: markRaw(pageContext.pageProps || {})
+      pageProps: markRaw(pageContext.pageProps || {}),
+      Layout: markRaw(pageContext.exports.Layout || LayoutDefault)
     }),
     created() {
       rootComponent = this
     },
     render() {
       return h(
-          PageShell,
+          this.Layout,
           {},
           {
             default: () => {
@@ -47,13 +48,12 @@ function createApp(pageContext) {
   app.use(store)
 
   // We use `app.changePage()` to do Client Routing, see `_default.page.client.js`
-  Object.assign(app, {
-    changePage: (pageContext) => {
-      Object.assign(pageContextReactive, pageContext)
-      rootComponent.Page = markRaw(pageContext.Page)
-      rootComponent.pageProps = markRaw(pageContext.pageProps || {})
-    }
-  })
+  app.changePage = (pageContext) => {
+    Object.assign(pageContextReactive, pageContext)
+    rootComponent.Page = markRaw(pageContext.Page)
+    rootComponent.pageProps = markRaw(pageContext.pageProps || {})
+    rootComponent.Layout = markRaw(pageContext.exports.Layout || LayoutDefault)
+  }
 
   // When doing Client Routing, we mutate pageContext (see usage of `app.changePage()` in `_default.page.client.js`).
   // We therefore use a reactive pageContext.
