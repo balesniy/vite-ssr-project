@@ -1,213 +1,126 @@
 <template>
-  <div class="drawer">
-    <input id="drawer-toggle" type="checkbox" class="drawer-toggle"/>
-    <div class="drawer-content">
-      <div class="page-content">
-        <slot/>
-        <footer>page footer</footer>
-      </div>
-      <div class="drawer-side">
-        <label for="drawer-toggle" class="drawer-overlay"/>
-        <ul class="menu">
-          <li class="menu-item"><a>About Us</a></li>
-          <li class="menu-item"><a>Login</a></li>
-          <li class="menu-item">
-            <div class="dropdown">
-              <label tabindex="0" class="btn">EUR</label>
-              <ul tabindex="0" class="dropdown-content options">
-                <li><a>USD</a></li>
-                <li><a>EUR</a></li>
-                <li><a>Polish zloty</a></li>
-                <li><a>Rus Ruble</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="menu-item">
-            <div class="dropdown">
-              <label tabindex="0" class="btn">EN</label>
-              <ul tabindex="0" class="dropdown-content options">
-                <li><a>English</a></li>
-                <li><a>Russian</a></li>
-                <li><a>German</a></li>
-                <li><a>Spanish</a></li>
-                <li><a>Dutch</a></li>
-                <li><a>Polish</a></li>
-                <li><a>French</a></li>
-                <li><a>Romanian</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="menu-item"><a>Login</a></li>
-          <li class="menu-item"><a>Booking application</a></li>
-        </ul>
-      </div>
-      <header class="header">
+  <div :class="{'block-scroll': isOpen}">
+    <header class="header">
+      <div class="mobile-nav">
         <a href=""><img class="header-logo" src="./assets/logo-dark.svg" alt=""></a>
         <div class="buttons">
           <button class="button chat"><img src="./assets/icon-chat.svg" alt=""></button>
           <button class="button call"><img src="./assets/icon-phone.svg" alt=""></button>
-          <label for="drawer-toggle" class="button burger">
+          <button :class="{'is-open': isOpen}" class="button burger" @click="isOpen=!isOpen">
             <span class="burger__line"></span>
             <span class="burger__line"></span>
             <span class="burger__line"></span>
-          </label>
+          </button>
         </div>
-      </header>
-    </div>
+      </div>
+      <div class="menu-content" :class="{'is-open': isOpen}">
+        <ul class="menu-items">
+          <li>item 1</li>
+          <li class="md-hidden">item 2</li>
+          <li class="sm-hidden">item 3</li>
+          <li>item 4</li>
+          <li>item 5</li>
+          <li>item 6</li>
+          <li>item 7</li>
+        </ul>
+      </div>
+    </header>
+    <slot/>
+    <footer>page footer</footer>
   </div>
 </template>
+<script>
+export default {
+  data: () => ({
+    isOpen: false,
+  }),
+}
+</script>
 <style scoped lang="scss">
-.drawer {
-  display: grid;
-  width: 100%;
-  overflow: hidden;
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-width: 768px) {
+  .md-hidden {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .sm-hidden {
+    display: none;
+  }
+}
+
+.block-scroll {
   height: 100vh;
   height: 100dvh;
-}
-
-.drawer-content {
-  z-index: 0;
-  grid-column-start: 1;
-  grid-row-start: 1;
-  overflow-y: auto;
-  transition-property: all;
-  transition-duration: .3s;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-  display: grid;
-  --header-height: 52px;
-}
-
-.drawer-toggle:checked ~ .drawer-content {
   overflow-y: hidden;
 }
 
-.page-content {
-  margin-top: var(--header-height);
-  grid-column-start: 1;
-  grid-row-start: 1;
-}
-
-:where(.drawer-toggle~.drawer-content) {
-  height: inherit;
-}
-
-.drawer-toggle {
-  position: absolute;
-  height: 0;
-  width: 0;
-  -webkit-appearance: none;
-  appearance: none;
-  opacity: 0;
-}
-
-.drawer-side {
-  grid-column-start: 1;
-  grid-row-start: 1;
-  display: grid;
-  margin-top: var(--header-height);
-  overflow: hidden;
-}
-
-.drawer-toggle ~ .drawer-content .drawer-overlay {
-  visibility: hidden;
-  grid-column-start: 1;
-  grid-row-start: 1;
-  opacity: 0;
-  cursor: pointer;
-  background-color: rgba(29, 41, 57, 0.2);
-  transition-property: all;
-  transition-duration: .3s;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-}
-
-.drawer-toggle:checked ~ .drawer-content .drawer-overlay {
-  visibility: visible;
-  opacity: .999999;
-}
-
-.drawer-toggle ~ .drawer-content .drawer-overlay + * {
-  grid-column-start: 1;
-  grid-row-start: 1;
-  --tw-translate-x: 0;
-  --tw-translate-y: -100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y));
-  transition-property: all;
-  transition-duration: .3s;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-}
-
-.drawer-toggle:checked ~ .drawer-content .drawer-overlay + * {
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-}
-
-.menu {
-  background-color: white;
-  height: max-content;
-  max-height: 80vh;
-  overflow: auto;
-  padding: 12px;
-  margin: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.dropdown {
-  position: relative;
-}
-
-.dropdown .dropdown-content {
-  display: none;
-  opacity: 0;
-}
-
-.dropdown:focus .dropdown-content, .dropdown:focus-within .dropdown-content {
-  display: flex;
-  opacity: 1;
-}
-
-.btn {
-  flex-shrink: 0;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-color: transparent;
-  text-align: center;
-  padding-inline: 1rem;
-  padding: 5px 8px;
-  gap: 4px;
-
-  width: 80px;
-  height: 30px;
-
-  /* Gray/100 */
-  background: #F2F4F7;
-  border-radius: 8px;
-}
-
-.options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
 .header {
-  grid-column-start: 1;
-  grid-row-start: 1;
-  height: min-content;
-  background-color: aquamarine;
-  z-index: 10;
   position: relative;
+  box-shadow: 0px 1px 4px rgba(16, 24, 40, 0.08);
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.mobile-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 12px 12px;
-  box-shadow: 0px 1px 4px rgba(16, 24, 40, 0.08);
+}
+
+.menu-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100vh - 52px);
+  transform: translateX(-100%);
+  opacity: 0;
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(0,0,0,.2);
+
+  &.is-open {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (min-width: 768px) {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    background-color: transparent;
+    height: auto;
+    width: auto;
+  }
+}
+
+.menu-items {
+  margin: 0;
+  padding: 12px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: white;
+  max-height: 85%;
+  overflow: auto;
+  @media (min-width: 768px) {
+    background-color: transparent;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .buttons {
@@ -215,6 +128,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
 }
 
 .button {
@@ -267,7 +183,7 @@
     }
   }
 
-  .drawer-toggle:checked ~ .drawer-content & {
+  &.is-open {
     .burger__line {
       &:first-child {
         top: 6px;
@@ -283,10 +199,6 @@
         transform: rotate(-45deg);
       }
     }
-  }
-
-  @media screen and (min-width: 769px) {
-    display: none;
   }
 }
 
